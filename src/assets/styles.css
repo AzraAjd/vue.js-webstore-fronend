@@ -25,5 +25,23 @@
     height: 400px;
     margin-bottom: 20px;
     padding-top: 20px;
-    vertical-align: middle
+    vertical-align: middle;
+}
+
+.navbar {
+    /*display: block;
+    margin: auto;
+    text-align: center;
+    vertical-align: middle;*/
+}
+.login-btn {
+    top: 0px;
+    right: 20px;
+    float:right;
+}
+
+@media (max-width: 767px) {
+    .navbar .login-btn {
+        right: 75px;
+    }
 }

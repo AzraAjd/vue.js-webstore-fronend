@@ -18,22 +18,44 @@
             </li>
             <ul class="nav navbar-nav navbar-right">
                 <li class="nav-item" style="float:right">
-                    <button class="btn btn-info navlink" type="button">LOGIN</button>
+                    <button v-on:click="() => toggleModal('loginModalTrigger')" class="btn btn-info navlink" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">LOGIN</button>
+                    <LoginModal 
+                        v-if="modalTriggers.loginModalTrigger" 
+                        :toggleModal="() => toggleModal('loginModalTrigger')">
+                        omg wtf
+                    </LoginModal>
                 </li>
             </ul>
         </nav>
-     </div>
+    </div>
+    
 </template>
 
 
 <script>
+    import { ref } from 'vue';
+    import LoginModal from './LoginModal.vue'
     export default {
         name: 'navbar',
-        data() { },
-        mounted() {
-            console.log("hello");
+        components: {  
+            LoginModal,
+        },
+        setup() {
+            const modalTriggers = ref({
+                loginModalTrigger: false
+            });
+
+            const toggleModal = (trigger) => {
+                modalTriggers.value[trigger] = !modalTriggers.value[trigger]
+            };
+
+            return {
+                LoginModal,
+                modalTriggers,
+                toggleModal
+            }
         }
-    }
+    } 
 </script>
 
 

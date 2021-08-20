@@ -6,22 +6,21 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Sign In</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" v-on:click="toggleModal()" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            <form v-on:submit.prevent="submitForm">
                                 <div class="mb-3">
-                                    <label for="exampleInputEmail1" class="form-label">Email address</label>
-                                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                                    <label for="username" class="form-label">Username</label>
+                                    <input class="form-control"  v-model="form.userName">
                                 </div>
                                 <div class="mb-3">
                                     <label for="exampleInputPassword1" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="exampleInputPassword1">
+                                    <input type="password" class="form-control" id="exampleInputPassword1" v-model="form.password">
                                 </div>                             
                                 <div class="mb-3" style="margin:20px">
                                     <button type="button" class="popup-close btn btn-secondary" v-on:click="toggleModal()" style="margin:10px">Close</button>
-                                    <button type="button" class="btn btn-primary" style="margin:10px">Login</button>
+                                    <button type="submit" class="btn btn-primary" style="margin:10px" v-on:click="submitForm(); toggleModal()">Login</button>
                                 </div>
                             </form>
                         </div>
@@ -32,10 +31,32 @@
     </div> 
 </template>
 
-<script>   
+<script>
+import axios from "axios"
+
+   
     export default {
         name: 'login',
-        props: ['toggleModal']
+        props: ['toggleModal'],
+        data() {
+            return {
+                form: {
+                    userName: '',
+                    password: ''
+                }
+            }
+        },
+        methods: {
+            submitForm() {
+                axios.post('http://localhost:8080/auth', this.form)
+                    .then((res) => {
+                        console.log(res);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }
+        }
     }
 </script>
 

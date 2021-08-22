@@ -13,17 +13,21 @@
                     </li>
                     <li class="nav-item">
                         <a v-if="isAuthenticated == false" class="nav-link disabled" href="#">Add Item</a>
-                        <a v-else-if="isAuthenticated == true" class="nav-link enabled" href="#" style="color:lightgreen">Add Item</a>
+                        <a v-else-if="isAuthenticated == true" class="nav-link enabled" href="#" style="color:lightgreen" v-on:click="() => toggleModal('addItemModalTrigger')">Add Item</a>
+                        <AddItemModal
+                                v-if="modalTriggers.addItemModalTrigger"
+                                :toggleModal="() => toggleModal('addItemModalTrigger')">
+                        </AddItemModal>
                     </li>
                 </ul>
             </li>
             <ul class="nav navbar-nav navbar-right">
                 <li class="nav-item" style="float:right">
-                    <button v-on:click="() => toggleModal('loginModalTrigger')" class="btn btn-info navlink" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">LOGIN</button>
-                    <LoginModal 
-                        @checkAuthentication="CheckAuth($event)"
-                        v-if="modalTriggers.loginModalTrigger" 
-                        :toggleModal="() => toggleModal('loginModalTrigger')">
+                    <button v-if="isAuthenticated == false" v-on:click="() => toggleModal('loginModalTrigger')" class="btn btn-info navlink" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">LOGIN</button>
+                    <button v-else v-on:click="LogOut()" class="btn btn-info navlink" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">LOGOUT</button>
+                    <LoginModal @checkAuthentication="CheckAuth($event)"
+                                v-if="modalTriggers.loginModalTrigger"
+                                :toggleModal="() => toggleModal('loginModalTrigger')">
                     </LoginModal>
                 </li>
             </ul>
@@ -36,31 +40,36 @@
 <script>
     import { ref } from 'vue';
     import LoginModal from './LoginModal.vue'
+    import AddItemModal from './AddItemModal.vue'
     export default {
         name: 'navbar',
-        components: {  
+        components: {
             LoginModal,
+            AddItemModal
         },
         data() {
             return {
-                isAuthenticated: false //   check in case of error 
+                jwt: localStorage.getItem('token'),
+                isAuthenticated: false
             }
             
         },
         methods: {
             CheckAuth(auth) {
-                this.isAuthenticated = auth;
+               if (auth == null)
+                   isAuthenticated = false;
+                else
+                    this.isAuthenticated = true;
             },
-
-           /* toggleButton() {
-                $('.active,.disabled').click(function () {
-                    $(this).toggleClass('active disabled');
-                });
-            }*/
+            LogOut() {
+                localStorage.removeItem('token');
+                location.reload();
+            }
         },
         setup() {
             const modalTriggers = ref({
-                loginModalTrigger: false
+                loginModalTrigger: false,
+                addItemModalTrigger: false
             });
 
             const toggleModal = (trigger) => {
@@ -69,9 +78,15 @@
 
             return {
                 LoginModal,
+                AddItemModal,
                 modalTriggers,
                 toggleModal
             }
+        },
+        mounted() {
+            console.log(this.jwt + "HELLOOOO")
+            if (this.jwt != null)
+                this.isAuthenticated = true;
         }
     } 
 </script>

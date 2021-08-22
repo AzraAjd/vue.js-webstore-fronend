@@ -12,7 +12,7 @@
                             <hr>
                             <p class="card-text" style="height:70px; width:310px;">{{item.summary}}</p>
                             <p class="card-text">{{item.price}}$</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                            <a href="#" class="btn btn-primary">Delete</a>
                         </div>
                     </div>
                 </div>
@@ -39,7 +39,8 @@
                 .catch((error) => {
                     console.log(error);
                 });
-  },
+        }
+        }
 }
 </script>
 

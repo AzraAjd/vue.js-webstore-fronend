@@ -1,23 +1,31 @@
 <template>
-    <div class="login modal">
-        <div class="login-inner">
+    <div class="addItem modal">
+        <div class="addItem-inner">
             <div class="modal" tabindex="-1">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Sign In</h5>
+                            <h5 class="modal-title">Add product</h5>
                             <button type="button" class="btn-close" v-on:click="toggleModal()" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form v-on:submit.prevent="submitForm">
                                 <div class="mb-3">
-                                    <label for="username" class="form-label">Username</label>
-                                    <input class="form-control"  v-model="form.userName">
+                                    <label for="title" class="form-label">Title:</label>
+                                    <input class="form-control" v-model="form.title">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="exampleInputPassword1" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="exampleInputPassword1" v-model="form.password">
-                                </div>                             
+                                    <label for="summary" class="form-label">Description:</label>
+                                    <input class="form-control" v-model="form.summary">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="photoURL" class="form-label">Product photo URL:</label>
+                                    <input class="form-control" v-model="form.photoURL">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="price" class="form-label">Price ($):</label>
+                                    <input type="number" class="form-control" v-model="form.price">
+                                </div>
                                 <div class="mb-3" style="margin:20px">
                                     <button type="button" class="popup-close btn btn-secondary" v-on:click="toggleModal()" style="margin:10px">Close</button>
                                     <button type="submit" class="btn btn-primary" style="margin:10px" v-on:click="submitForm(); toggleModal()">Login</button>
@@ -28,35 +36,37 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 </template>
 
 <script>
-import axios from "axios"
+    import axios from "axios"
 
-   
+
     export default {
-        name: 'login',
+        name: 'addItem',
         props: ['toggleModal'],
         data() {
             return {
                 form: {
-                    userName: '',
-                    password: ''
+                    title: '',
+                    summary: '',
+                    photoURL: '',
+                    price: 0
                 },
             }
         },
         methods: {
             submitForm() {
-                axios.post('http://localhost:8080/auth', this.form)
+                let headers = {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                };
+                axios.post('http://localhost:8080/products', this.form, { headers })
                     .then((res) => {
                         console.log(res);
-                        this.$emit('checkAuthentication', res.data.jwtToken)
-                        localStorage.setItem('token', res.data.jwtToken);     
                     })
                     .catch((error) => {
                         console.log(error);
-                        this.$emit('checkAuthentication', false)
                     });
             },
         }
@@ -76,10 +86,9 @@ import axios from "axios"
         align-items: center;
         justify-content: center;
     }
-    .login-inner
-    {
+
+    .login-inner {
         background: #FFF;
         padding: 32px;
     }
-    
 </style>

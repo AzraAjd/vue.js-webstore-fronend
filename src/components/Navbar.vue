@@ -12,7 +12,8 @@
                         <a class="nav-link" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="#">Add Article</a>
+                        <a v-if="isAuthenticated == false" class="nav-link disabled" href="#">Add Item</a>
+                        <a v-else-if="isAuthenticated == true" class="nav-link enabled" href="#" style="color:lightgreen">Add Item</a>
                     </li>
                 </ul>
             </li>
@@ -20,9 +21,9 @@
                 <li class="nav-item" style="float:right">
                     <button v-on:click="() => toggleModal('loginModalTrigger')" class="btn btn-info navlink" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">LOGIN</button>
                     <LoginModal 
+                        @checkAuthentication="CheckAuth($event)"
                         v-if="modalTriggers.loginModalTrigger" 
                         :toggleModal="() => toggleModal('loginModalTrigger')">
-                        omg wtf
                     </LoginModal>
                 </li>
             </ul>
@@ -39,6 +40,23 @@
         name: 'navbar',
         components: {  
             LoginModal,
+        },
+        data() {
+            return {
+                isAuthenticated: false //   check in case of error 
+            }
+            
+        },
+        methods: {
+            CheckAuth(auth) {
+                this.isAuthenticated = auth;
+            },
+
+           /* toggleButton() {
+                $('.active,.disabled').click(function () {
+                    $(this).toggleClass('active disabled');
+                });
+            }*/
         },
         setup() {
             const modalTriggers = ref({

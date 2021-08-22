@@ -27,18 +27,19 @@
     "eslint-plugin-vue": "^7.0.0"
   },
   "eslintConfig": {
+    "rules": {
+      "no-unused-vars": "off"
+    },
     "root": true,
     "env": {
       "node": true
     },
     "extends": [
-      "plugin:vue/vue3-essential",
-      "eslint:recommended"
+      "plugin:vue/vue3-essential"
     ],
     "parserOptions": {
       "parser": "babel-eslint"
-    },
-    "rules": {}
+    }
   },
   "browserslist": [
     "> 1%",

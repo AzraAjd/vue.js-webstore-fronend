@@ -31,7 +31,7 @@
             }
         },
         mounted() {
-            axios.get('http://localhost:8080/products/')
+            axios.get('http://localhost:8080/products')
                 .then((response) => {
                     console.log(response.data);
                     this.Article = response.data;

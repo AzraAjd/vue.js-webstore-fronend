@@ -43,7 +43,7 @@ import axios from "axios"
                 form: {
                     userName: '',
                     password: ''
-                }
+                },
             }
         },
         methods: {
@@ -51,11 +51,13 @@ import axios from "axios"
                 axios.post('http://localhost:8080/auth', this.form)
                     .then((res) => {
                         console.log(res);
+                        this.$emit('checkAuthentication', true)
                     })
                     .catch((error) => {
                         console.log(error);
+                        this.$emit('checkAuthentication', false)
                     });
-            }
+            },
         }
     }
 </script>

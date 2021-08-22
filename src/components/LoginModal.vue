@@ -51,8 +51,9 @@ import axios from "axios"
                 axios.post('http://localhost:8080/auth', this.form)
                     .then((res) => {
                         console.log(res);
-                        this.$emit('checkAuthentication', res.data.jwtToken)
-                        localStorage.setItem('token', res.data.jwtToken);     
+                        this.$emit('checkAuthentication', res.data.jwtToken);
+                        localStorage.setItem('token', res.data.jwtToken);   
+                        location.reload();
                     })
                     .catch((error) => {
                         console.log(error);

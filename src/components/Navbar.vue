@@ -84,7 +84,6 @@
             }
         },
         mounted() {
-            console.log(this.jwt + "HELLOOOO")
             if (this.jwt != null)
                 this.isAuthenticated = true;
         }

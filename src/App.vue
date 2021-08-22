@@ -1,7 +1,8 @@
-<template> 
+<template>
     <Navbar />
     <HelloWorld />
-    <div id="app">    
+    <notifications />
+    <div id="app">
         <router-view></router-view>
     </div>
 </template>

@@ -12,8 +12,8 @@
                             <hr>
                             <p class="card-text" style="height:70px; width:310px;">{{item.summary}}</p>
                             <p class="card-text">{{item.price}}$</p>
-                            <a v-on:click="DeletedItemAlert(); deleteItem(item.id)" v-if="isAuthenticated == true" href="#" class="btn btn-danger" style="margin-right:15px; color:white">Delete</a>
-                            <a v-if="isAuthenticated == true" href="#" class="btn btn-primary" style="margin-right:15px; color:white">Update</a>
+                            <a v-if="role == 'ADMIN'" v-on:click="deleteItem(item.id)" href="#" class="btn btn-danger" style="margin-right:15px; color:white">Delete</a> <!--reloading page removes toast message-->
+                            <a v-if="role == 'ADMIN'" href="#" class="btn btn-primary" style="margin-right:15px; color:white">Update</a>
                         </div>
                     </div>
                 </div>
@@ -29,7 +29,9 @@
         data() {
             return {
                 Article: {},
-                isAuthenticated: false
+                isAuthenticated: false,
+                isAdmin: false,
+                role: ""
             }
         },
         mounted() {
@@ -41,30 +43,31 @@
                 .catch((error) => {
                     console.log(error);
                 });
-            if (localStorage.getItem('token') != null)
+            this.role = localStorage.getItem('role');
+            /*if (localStorage.getItem('token') != null)
                 this.isAuthenticated = true;
-   
+            if (localStorage.getItem('role') == "ADMIN")
+                this.isAdmin = true;*/
+
         },
         methods: {
             CheckAuth() {
                 if (isAuthenticated = true)
                     location.reload();
             },
-            DeletedItemAlert() {
-                this.$notify({
-                    type: "warn",
-                    title: "Item Deleted",
-                });
-            },
             deleteItem(id) {
+                console.log(id)
                 let headers = {
                     'Authorization': 'Bearer ' + localStorage.getItem('token')
                 };
                 axios.delete('http://localhost:8080/products/' + id, { headers })
                     .then((response) => {
                         console.log(response);
+                        location.reload();
+                    })
+                    .catch((error) => {
+                        console.log(error);
                     });
-                location.reload();
             }
         }
 }

@@ -12,8 +12,8 @@
                         <a class="nav-link" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a v-if="isAuthenticated == false" class="nav-link disabled" href="#">Add Item</a>
-                        <a v-else-if="isAuthenticated == true" class="nav-link enabled" href="#" style="color:lightgreen" v-on:click="() => toggleModal('addItemModalTrigger')">Add Item</a>
+                        <a v-if="role != 'ADMIN'" class="nav-link disabled" href="#">Add Item</a>
+                        <a v-else-if="role == 'ADMIN'" class="nav-link enabled" href="#" style="color:lightgreen" v-on:click="() => toggleModal('addItemModalTrigger')">Add Item</a>
                         <AddItemModal
                                 v-if="modalTriggers.addItemModalTrigger"
                                 :toggleModal="() => toggleModal('addItemModalTrigger')">
@@ -50,7 +50,9 @@
         data() {
             return {
                 jwt: localStorage.getItem('token'),
-                isAuthenticated: false
+                role: localStorage.getItem('role'),
+                isAuthenticated: false,
+                isAdmin: true
             }
             
         },
@@ -63,6 +65,8 @@
             },
             LogOut() {
                 localStorage.removeItem('token');
+                localStorage.removeItem('role');
+                this.isAdmin = false;
                 location.reload();
             }
         },

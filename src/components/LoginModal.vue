@@ -20,7 +20,7 @@
                                 </div>                             
                                 <div class="mb-3" style="margin:20px">
                                     <button type="button" class="popup-close btn btn-secondary" v-on:click="toggleModal()" style="margin:10px">Close</button>
-                                    <button type="submit" class="btn btn-primary" style="margin:10px" v-on:click="submitForm(); toggleModal()">Login</button>
+                                    <button type="submit" class="btn btn-primary" style="margin:10px" v-on:click="submitForm(); toggleModal(); checkIfAdmin()">Login</button>
                                 </div>
                             </form>
                         </div>
@@ -53,11 +53,22 @@ import axios from "axios"
                         console.log(res);
                         this.$emit('checkAuthentication', res.data.jwtToken);
                         localStorage.setItem('token', res.data.jwtToken);   
-                        location.reload();
+                        location.reload()
                     })
                     .catch((error) => {
                         console.log(error);
                         this.$emit('checkAuthentication', false)
+                    });
+            },
+            //To-Do parse jwt to get role instead of making another call
+            checkIfAdmin() {
+                axios.get('http://localhost:8080/users/user/' + this.form.userName )
+                    .then((res) => {
+                        //console.log(res.data.role);
+                        localStorage.setItem('role', res.data.role);
+                    })
+                    .catch((error) => {
+                        console.log(error);
                     });
             },
         }

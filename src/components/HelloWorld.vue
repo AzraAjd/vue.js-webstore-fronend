@@ -13,7 +13,12 @@
                             <p class="card-text" style="height:70px; width:310px;">{{item.summary}}</p>
                             <p class="card-text">{{item.price}}$</p>
                             <a v-if="role == 'ADMIN'" v-on:click="deleteItem(item.id)" href="#" class="btn btn-danger" style="margin-right:15px; color:white">Delete</a> <!--reloading page removes toast message-->
-                            <a v-if="role == 'ADMIN'" href="#" class="btn btn-primary" style="margin-right:15px; color:white">Update</a>
+                            <a v-if="role == 'ADMIN'" v-on:click="toggleModal(); selectItem(item)" href="#" class="btn btn-primary" style="margin-right:15px; color:white">Update</a>
+                            <UpdateItemModal v-if="modalTrigger" 
+                                             v-bind:item="selectedItem"
+                                             :toggleModal="() => toggleModal()"
+                                             :currentData="() => currentData(item)">
+                            </UpdateItemModal>
                         </div>
                     </div>
                 </div>
@@ -24,14 +29,18 @@
 
 <script>
     import axios from 'axios';
+    import UpdateItemModal from './UpdateItemModal.vue';
     export default {
         name: 'hello',
+        components: { UpdateItemModal },
         data() {
             return {
                 Article: {},
                 isAuthenticated: false,
                 isAdmin: false,
-                role: ""
+                role: "",
+                modalTrigger: false,
+                selectedItem: {}
             }
         },
         mounted() {
@@ -44,13 +53,17 @@
                     console.log(error);
                 });
             this.role = localStorage.getItem('role');
-            /*if (localStorage.getItem('token') != null)
-                this.isAuthenticated = true;
-            if (localStorage.getItem('role') == "ADMIN")
-                this.isAdmin = true;*/
-
         },
         methods: {
+            selectItem(item) {
+                this.selectedItem = item;
+            },
+            unselectItem(item) {
+                this.selectedItem = {};
+            },
+            toggleModal() {
+                this.modalTrigger = !this.modalTrigger;
+            },
             CheckAuth() {
                 if (isAuthenticated = true)
                     location.reload();
@@ -70,6 +83,26 @@
                     });
             }
         }
+       /*setup() {
+           const modalTriggers = ref({
+               loginModalTrigger: false,
+               addItemModalTrigger: false,
+                updateModalTrigger: false
+            });
+
+            const toggleModal = (trigger) => {
+                modalTriggers.value[trigger] = !modalTriggers.value[trigger]
+            };
+
+           return {
+                LoginModal,
+                AddItemModal,
+                UpdateItemModal,
+                updateModalTrigger,
+                modalTriggers,
+                toggleModal
+            }
+        }*/
 }
 </script>
 

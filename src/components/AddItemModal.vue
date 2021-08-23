@@ -28,7 +28,7 @@
                                 </div>
                                 <div class="mb-3" style="margin:20px">
                                     <button type="button" class="popup-close btn btn-secondary" v-on:click="toggleModal()" style="margin:10px">Close</button>
-                                    <button type="submit" class="btn btn-primary" style="margin:10px" v-on:click="submitForm(); toggleModal()">Login</button>
+                                    <button type="submit" class="btn btn-primary" style="margin:10px" v-on:click="submitForm(); toggleModal()">Add</button>
                                 </div>
                             </form>
                         </div>
@@ -45,7 +45,7 @@
 
     export default {
         name: 'addItem',
-        props: ['toggleModal'],
+        props: ['toggleModal', 'item'],
         data() {
             return {
                 form: {

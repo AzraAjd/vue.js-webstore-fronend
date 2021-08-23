@@ -23,7 +23,7 @@
             </li>
             <ul class="nav navbar-nav navbar-right">
                 <li class="nav-item" style="float:right">
-                    <button v-if="isAuthenticated == false" v-on:click="() => toggleModal('loginModalTrigger')" class="btn btn-info navlink" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">LOGIN</button>
+                    <button v-if="isAuthenticated == false" v-on:click="() => toggleModal('loginModalTrigger')" class="btn btn-info navlink" data-bs-toggle="modal" type="button">LOGIN</button>
                     <button v-else v-on:click="LogOut()" class="btn btn-info navlink" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">LOGOUT</button>
                     <LoginModal @checkAuthentication="CheckAuth($event)"
                                 v-if="modalTriggers.loginModalTrigger"

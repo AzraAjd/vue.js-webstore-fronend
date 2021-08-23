@@ -5,30 +5,30 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Add product</h5>
-                            <button type="button" class="btn-close" v-on:click="toggleModal()" aria-label="Close"></button>
+                            <h5 class="modal-title">Update product</h5>
+                            <button v-on:click="toggleModal()" type="button" class="btn-close" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form v-on:submit.prevent="submitForm">
                                 <div class="mb-3">
-                                    <label for="title" class="form-label" value={{item.title}}>Title:</label>
-                                    <input class="form-control">
+                                    <label for="title" class="form-label">Title:</label>
+                                    <input class="form-control" v-model="form.title">
                                 </div>
                                 <div class="mb-3">
                                     <label for="summary" class="form-label" value="">Description:</label>
-                                    <input class="form-control">
+                                    <input class="form-control" v-model="form.summary">
                                 </div>
                                 <div class="mb-3">
                                     <label for="photoURL" class="form-label">Product photo URL:</label>
-                                    <input class="form-control">
+                                    <input class="form-control" v-model="form.photoURL">
                                 </div>
                                 <div class="mb-3">
                                     <label for="price" class="form-label">Price ($):</label>
-                                    <input type="number" class="form-control">
+                                    <input type="number" class="form-control" v-model="form.price">
                                 </div>
                                 <div class="mb-3" style="margin:20px">
-                                    <button type="button" class="popup-close btn btn-secondary" v-on:click="toggleModal()" style="margin:10px">Close</button>
-                                    <button type="submit" class="btn btn-primary" style="margin:10px" v-on:click="submitForm(item.id); toggleModal()">Login</button>
+                                    <button v-on:click="toggleModal()" type="button" class="popup-close btn btn-secondary" style="margin:10px">Close</button>
+                                    <button v-on:click="submitForm(form.id); toggleModal()" type="submit" class="btn btn-primary" style="margin:10px">Update</button>
                                 </div>
                             </form>
                         </div>
@@ -45,29 +45,31 @@
 
     export default {
         name: 'updateItem',
-        props: { item: Object },
-        
+        props: ['item', 'toggleModal'],
 
-        /*propsData: {
-            type: Object
-        }*/
-    
         data() {
             return {
                 form: {
-                    title: '',
-                    summary: '',
-                    photoURL: '',
-                    price: 0
+                    title: this.item.title,
+                    summary: this.item.summary,
+                    photoURL: this.item.photoURL,
+                    price: this.item.price,
+                    id: this.item.id
                 }
             }
         },
-        computed: {
-            Article: function() {
-                return this.props.propsData
+        watch: {
+            item() {
+                console.log('item')
             }
         },
         methods: {
+            currentData(item) {
+                this.form.title = item.title;
+                this.form.summary = item.summary;
+                this.form.photoURL = item.summary;
+                this.form.price = item.summary;
+            },
             submitForm(id) {
                 let headers = {
                     'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -79,12 +81,11 @@
                     .catch((error) => {
                         console.log(error);
                     });
+                location.reload();
             },
         },
-        mounted() {
-
-        }
     }
+    
 </script>
 
 <style scoped>

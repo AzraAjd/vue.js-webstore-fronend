@@ -20,6 +20,7 @@ npm run build
 ```
 npm run lint
 ```
+### Check connection on http://localhost:3000
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

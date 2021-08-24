@@ -1,4 +1,5 @@
 # webstore-frontend
+Frontend connecting to API available at https://github.com/AzraAjd/java-webstore-api
 
 ## Project setup
 ```
@@ -7,7 +8,7 @@ npm install
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+npm run serve -- --port 3000
 ```
 
 ### Compiles and minifies for production
